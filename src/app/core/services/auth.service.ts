@@ -35,10 +35,6 @@ export class AuthService {
     return this.userSubject.value?._id;
   }
 
-  getCurrentUser(): User | null {
-    return this.userSubject.value;
-  }
-
   setUser(user: User | null) {
     this.userSubject.next(user);
   }
