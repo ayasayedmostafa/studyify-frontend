@@ -16,7 +16,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
- private api = environment.apiUrl;
+  private api = environment.apiUrl;
   private http = inject(HttpClient);
 
   private userSubject = new BehaviorSubject<User | null>(null);
@@ -29,6 +29,10 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.userSubject.value;
+  }
+
+  getCurrentUser(): User | null {
+    return this.userSubject.value;
   }
 
   getCurrentUserId(): string | undefined {
@@ -99,7 +103,10 @@ export class AuthService {
     return this.http.post<any>(`${this.api}/auth/register`, data);
   }
 
-  sendOtp(purpose: 'Email Confirmation' | 'Password Recovery', email?: string) {
+  sendOtp(
+    purpose: 'Email Confirmation' | 'Password Recovery',
+    email?: string,
+  ) {
     return this.http.post(
       `${this.api}/auth/send-otp/${encodeURIComponent(purpose)}`,
       { email },
