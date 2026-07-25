@@ -10,13 +10,12 @@ import {
 } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../models/api.model';
-import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private api = environment.apiUrl;
+  private api = '/api/v1';
   private http = inject(HttpClient);
 
   private userSubject = new BehaviorSubject<User | null>(null);
@@ -29,14 +28,6 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return !!this.userSubject.value;
-  }
-
-  getCurrentUser(): User | null {
-    return this.userSubject.value;
-  }
-
-  getCurrentUserId(): string | undefined {
-    return this.userSubject.value?._id;
   }
 
   setUser(user: User | null) {
@@ -103,10 +94,7 @@ export class AuthService {
     return this.http.post<any>(`${this.api}/auth/register`, data);
   }
 
-  sendOtp(
-    purpose: 'Email Confirmation' | 'Password Recovery',
-    email?: string,
-  ) {
+  sendOtp(purpose: 'Email Confirmation' | 'Password Recovery', email?: string) {
     return this.http.post(
       `${this.api}/auth/send-otp/${encodeURIComponent(purpose)}`,
       { email },
