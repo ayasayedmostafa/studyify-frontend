@@ -29,7 +29,7 @@ export const routes: Routes = [
 
   {
     path: 'rooms',
-    
+
     loadComponent: () =>
       import('./features/all-rooms/all-rooms.component')
         .then(m => m.AllRoomsComponent),
@@ -38,7 +38,7 @@ export const routes: Routes = [
 
   {
     path: 'rooms/join',
-    
+
     loadComponent: () =>
       import('./features/join-room/join-room.component')
         .then(m => m.JoinRoomComponent),
@@ -100,16 +100,9 @@ export const routes: Routes = [
     path: 'friends',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/pages/simple-page/simple-page.component').then(
-        (m) => m.SimplePageComponent,
+      import('./features/friends/friends.component').then(
+        (m) => m.FriendsComponent,
       ),
-    data: {
-      title: 'Friends',
-      description:
-        'See your study network, connect with classmates, and collaborate without extra clutter.',
-      actionLabel: 'Open Notifications',
-      actionLink: '/notifications',
-    },
   },
 
 
@@ -117,16 +110,9 @@ export const routes: Routes = [
     path: 'notifications',
     canActivate: [authGuard],
     loadComponent: () =>
-      import('./features/pages/simple-page/simple-page.component').then(
-        (m) => m.SimplePageComponent,
+      import('./features/notifications/notifications.component').then(
+        (m) => m.NotificationsComponent,
       ),
-    data: {
-      title: 'Notifications',
-      description:
-        'Review recent updates from rooms, friends, and account activity in a clean feed.',
-      actionLabel: 'View Friends',
-      actionLink: '/friends',
-    },
   },
 
 
@@ -166,7 +152,7 @@ export const routes: Routes = [
       import('./features/auth/pages/reset-password-page/reset-password-page.component')
         .then((m) => m.ResetPasswordPageComponent),
   },
-  
+
   {
     path: '**',
     redirectTo: 'home',
