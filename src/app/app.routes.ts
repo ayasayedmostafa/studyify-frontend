@@ -67,6 +67,14 @@ export const routes: Routes = [
     },
   },
   {
+    path: 'rooms/create',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/create-room/create-room.component').then(
+        (m) => m.CreateRoomComponent,
+      ),
+  },
+  {
     path: 'rooms/:roomId',
     canActivate: [authGuard,roomGuard],
     loadComponent: () =>

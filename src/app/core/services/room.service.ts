@@ -51,6 +51,9 @@ export class RoomService {
       data,
     );
   }
+  createRoom(data: FormData): Observable<ApiResponse<{ room: Room }>> {
+    return this.http.post<ApiResponse<{ room: Room }>>(this.baseUrl, data);
+  }
 
   joinRoom(roomId: string): Observable<any> {
     return this.http.post(`${this.baseUrl}/${roomId}/join`, {});
