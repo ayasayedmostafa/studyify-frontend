@@ -345,7 +345,7 @@ leaveRoom(): void {
     this.subscriptions.add(
       this.roomService.getRoom(this.roomId).subscribe({
         next: (room) => {
-         this.roomCreatedById = room.createdBy?._id;
+        this.roomCreatedById = room.createdBy?._id ?? '';
           if (this.isAdmin) {
             this.loadPendingMembers();
           }
