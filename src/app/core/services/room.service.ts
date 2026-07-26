@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
-import { environment } from '../../environment';
+import { environment } from '../../../environments/environment';
 import { Room, ApiResponse } from '../models/room.model';
 
 export interface RoomMember {
@@ -96,6 +96,9 @@ export class RoomService {
 
   removeMember(roomId: string, userId: string): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${roomId}/members/${userId}`);
+  }
+  kickMember(roomId: string, userId: string): Observable<any> {
+    return this.removeMember(roomId, userId);
   }
 
   /** Checks whether the current user is a member of the given room */
