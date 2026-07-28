@@ -92,10 +92,12 @@ export class AllRoomsComponent implements OnInit, OnDestroy {
 
     switch (this.activeFilter) {
       case 'public':
-        rooms = rooms.filter(r => r.status === 'public');
+        rooms = rooms.filter(r => r.privacyType === 'public');
         break;
       case 'private':
-        rooms = rooms.filter(r => r.status === 'private');
+        rooms = rooms.filter(
+          r => r.privacyType === 'private_request' || r.privacyType === 'private_password'
+        );
         break;
       case 'my':
         rooms = rooms.filter(r => r.isJoined);

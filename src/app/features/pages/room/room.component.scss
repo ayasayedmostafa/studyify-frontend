@@ -637,3 +637,12 @@
     .leave-icon { transform: translateX(-4px); }
   }
 }
+
+@media (max-width: 900px) {
+  .room-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    height: auto;
+    overflow: visible;
+  }
+}
