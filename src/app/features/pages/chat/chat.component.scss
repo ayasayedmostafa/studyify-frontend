@@ -9,6 +9,7 @@ $received-bubble: #ffffff;
   display: flex;
   flex-direction: column;
   height: 100vh;
+  height: 100dvh;
   max-width: 800px;
   margin: 0 auto;
   background: #fff;
@@ -99,9 +100,11 @@ $received-bubble: #ffffff;
     }
 
     .send-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  
       background: $primary-color;
       border: none;
       display: flex;
