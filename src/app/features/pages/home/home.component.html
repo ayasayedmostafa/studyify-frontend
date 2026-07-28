@@ -63,7 +63,7 @@
       <ng-container *ngIf="rooms.length > 0; else noRoomsTpl">
         <div class="room-card" *ngFor="let room of rooms">
           <div class="room-image-wrapper">
-           <img [src]="room.image?.url ? room.image.url : 'https://placehold.co/400x200?text=Room'"
+          <img [src]="room.image.url ? room.image.url : 'https://placehold.co/400x200?text=Room'"
      [alt]="room.name" class="room-image" />
           </div>
           <div class="room-info">
