@@ -61,7 +61,9 @@
           </p>
         </div>
 
-
+        <div *ngIf="errorMessage" class="form-field__error" style="margin-bottom: 12px;">
+  {{ errorMessage }}
+</div>
         <button type="submit" class="btn btn--primary" [class.btn--loading]="isLoading" [disabled]="isLoading">
           <span *ngIf="!isLoading">Join Room &nbsp;→</span>
           <span *ngIf="isLoading" class="btn__spinner"></span>

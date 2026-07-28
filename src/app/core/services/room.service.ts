@@ -55,9 +55,9 @@ export class RoomService {
     return this.http.post<ApiResponse<{ room: Room }>>(this.baseUrl, data);
   }
 
-  joinRoom(roomId: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/${roomId}/join`, {});
-  }
+  joinRoom(roomId: string, password?: string): Observable<any> {
+  return this.http.post(`${this.baseUrl}/${roomId}/join`, password ? { password } : {});
+}
 
   leaveRoom(roomId: string): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${roomId}/members/me`);
