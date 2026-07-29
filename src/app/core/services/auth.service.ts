@@ -22,6 +22,21 @@ export class AuthService {
   private userSubject = new BehaviorSubject<User | null>(null);
   user$ = this.userSubject.asObservable();
 
+  // بيتخزن فيه توكن السوكيت عشان الـ SocketService يقدر يستخدمه
+  // بدل ما يعتمد بس على الكوكيز (اللي ممكن تتحجب عبر الدومينات المختلفة)
+  private socketToken: string | null = null;
+
+  getSocketToken(): string | null {
+    return this.socketToken;
+  }
+
+  private refreshSocketToken(): void {
+    this.http.get<any>(`${this.api}/auth/socket-token`).subscribe({
+      next: (res) => (this.socketToken = res?.data?.token ?? null),
+      error: () => (this.socketToken = null),
+    });
+  }
+
   private me$?: Observable<any>;
   private isFetchingMe = false;
   private loadingSubject = new BehaviorSubject<boolean>(true);
@@ -58,6 +73,7 @@ export class AuthService {
         this.userSubject.next(res.data.user);
         this.loadingSubject.next(false);
         this.isFetchingMe = false;
+        this.refreshSocketToken();
       }),
       catchError((err) => {
         this.loadingSubject.next(false);
@@ -73,6 +89,7 @@ export class AuthService {
 
   clearUser() {
     this.userSubject.next(null);
+    this.socketToken = null;
     this.me$ = undefined;
     this.loadingSubject.next(false);
   }
@@ -82,6 +99,7 @@ export class AuthService {
       tap((res) => {
         this.userSubject.next(res.data.user);
         this.me$ = undefined;
+        this.refreshSocketToken();
       }),
     );
   }
@@ -104,6 +122,7 @@ export class AuthService {
       tap((res) => {
         this.userSubject.next(res.data.user);
         this.me$ = undefined;
+        this.refreshSocketToken();
       }),
     );
   }
@@ -129,6 +148,7 @@ export class AuthService {
           if (purpose === 'Email Confirmation' && res?.data?.user) {
             this.userSubject.next(res.data.user);
             this.me$ = undefined;
+            this.refreshSocketToken();
           }
         }),
       );

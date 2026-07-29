@@ -1,22 +1,29 @@
 import { Injectable } from '@angular/core';
 import { io, Socket } from 'socket.io-client';
 import { environment } from '../../../environments/environment';
+import { AuthService } from './auth.service';
 
 @Injectable({ providedIn: 'root' })
 export class SocketService {
   private socket: Socket;
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.socket = io(environment.socketUrl, {
       transports: ['websocket', 'polling'],
       autoConnect: true,
       withCredentials: true,
+      // بنبعت التوكن صراحة مع كل محاولة اتصال (بما فيها إعادة المحاولة
+      // التلقائية)، عشان لو الكوكي اتحجبت (زي Safari عبر دومينات مختلفة)
+      // الاتصال يعدي برضه عن طريق التوكن.
+      auth: (cb) => {
+        const token = this.authService.getSocketToken();
+        cb(token ? { token } : {});
+      },
     });
 
-    // 🔍 تشخيص مؤقت: لو الاتصال فشل (مثلاً بسبب الكوكيز)، هيظهر popup واضح
-    // على الشاشة نفسها بدل ما يختفي بصمت. ممكن نشيله بعد ما نتأكد من السبب.
+    // 🔍 تشخيص: بنسجل في الكونسول لو الاتصال فشل، من غير ما نوقف الصفحة
     this.socket.on('connect_error', (err) => {
-      alert('فشل الاتصال بالشات: ' + err.message);
+      console.error('Socket connect_error:', err.message);
     });
   }
 
