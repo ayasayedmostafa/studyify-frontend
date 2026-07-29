@@ -12,6 +12,12 @@ export class SocketService {
       autoConnect: true,
       withCredentials: true,
     });
+
+    // 🔍 تشخيص مؤقت: لو الاتصال فشل (مثلاً بسبب الكوكيز)، هيظهر popup واضح
+    // على الشاشة نفسها بدل ما يختفي بصمت. ممكن نشيله بعد ما نتأكد من السبب.
+    this.socket.on('connect_error', (err) => {
+      alert('فشل الاتصال بالشات: ' + err.message);
+    });
   }
 
   // ─── Room Actions ─────────────────────────────────────────────────────────────
