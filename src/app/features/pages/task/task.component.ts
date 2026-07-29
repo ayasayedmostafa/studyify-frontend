@@ -28,7 +28,7 @@ export class TaskComponent implements OnInit {
 
   loadTasks() {
     this.http
-      .patch<any>(`${this.baseUrl}/tasks/${taskId}`, { title: newTitle })
+      .get<any>(`${this.baseUrl}/rooms/${this.roomId}/tasks`)
       .subscribe({
         next: (res) => this.tasks = res.data?.tasks || [],
         error: (err) => console.error('Load tasks error:', err)
