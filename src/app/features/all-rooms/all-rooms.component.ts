@@ -8,9 +8,7 @@ import { RoomService } from '../../core/services/room.service';
 import { Room, RoomStatus } from '../../core/models/room.model';
 
 import { FooterComponent } from '../../shared/components/footer/footer.component';
-import { io, Socket } from 'socket.io-client';
-import { environment } from '../../../environment';
-import { Subscription } from 'rxjs';
+import { SocketService } from '../../core/services/socket.service';
 
 type FilterTab = 'all' | 'my' | 'public' | 'private' | 'favourites';
 type ViewMode = 'grid' | 'list';
@@ -42,12 +40,11 @@ export class AllRoomsComponent implements OnInit, OnDestroy {
   totalPages = 1;
   pageNumbers: number[] = [];
 
-  private socket: Socket;
-  private socketSub?: Subscription;
-
-  constructor(private roomService: RoomService, private router: Router) {
-    this.socket = io(environment.socketUrl);
-  }
+  constructor(
+    private roomService: RoomService,
+    private router: Router,
+    private socketService: SocketService,
+  ) {}
 
   ngOnInit(): void {
     this.fetchRooms();
@@ -55,8 +52,7 @@ export class AllRoomsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.socket.disconnect();
-    this.socketSub?.unsubscribe();
+    this.socketService.removeRoomApprovedListener();
   }
 
   private fetchRooms(): void {
@@ -68,7 +64,7 @@ export class AllRoomsComponent implements OnInit, OnDestroy {
   }
 
   private listenToSocket(): void {
-    this.socket.on('room:approved', (data: { roomId: string }) => {
+    this.socketService.onRoomApproved((data: { roomId: string }) => {
       this.router.navigate(['/rooms', data.roomId]);
     });
   }

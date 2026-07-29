@@ -60,7 +60,11 @@
 
     <div class="rooms-grid" *ngIf="!loading; else loadingTpl">
 
-      <ng-container *ngIf="rooms.length > 0; else noRoomsTpl">
+      <div class="rooms-error" *ngIf="roomsError">
+        <p>Couldn't load your rooms. Please try again.</p>
+      </div>
+
+      <ng-container *ngIf="!roomsError && rooms.length > 0; else noRoomsTpl">
         <div class="room-card" *ngFor="let room of rooms">
           <div class="room-image-wrapper">
           <img [src]="room.image.url ? room.image.url : 'https://placehold.co/400x200?text=Room'"
@@ -74,7 +78,7 @@
       </ng-container>
 
       <ng-template #noRoomsTpl>
-        <div class="no-rooms">
+        <div class="no-rooms" *ngIf="!roomsError">
           <p>You haven't joined any rooms yet.</p>
           <button class="btn-join" (click)="goToJoinRoom()">Join a Room</button>
         </div>

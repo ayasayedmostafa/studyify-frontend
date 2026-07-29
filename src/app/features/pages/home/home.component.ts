@@ -22,14 +22,8 @@ export class HomeComponent implements OnInit {
   rooms: Room[] = [];
   loading = true;
 
-  private mockRooms: Room[] = [
-    { _id: '1', name: 'Advanced Quantum Theory', image: { url: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=200&fit=crop', publicId: null } },
-    { _id: '2', name: 'Ethics in AI Research', image: { url: 'https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=400&h=200&fit=crop', publicId: null } },
-    { _id: '3', name: 'Biology 101', image: { url: 'https://images.unsplash.com/photo-1628595351029-c2bf17511435?w=400&h=200&fit=crop', publicId: null } },
-    { _id: '4', name: 'Math Analysis', image: { url: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=400&h=200&fit=crop', publicId: null } },
-    { _id: '5', name: 'History of Science', image: { url: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400&h=200&fit=crop', publicId: null } },
-    { _id: '6', name: 'Psychology Basics', image: { url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=400&h=200&fit=crop', publicId: null } },
-  ];
+  /** بيتحط true لو فشل تحميل الرومات، عشان نوريه رسالة واضحة بدل بيانات وهمية */
+  roomsError = false;
 
   ngOnInit(): void {
     const userId = this.authService['userSubject'].value?._id;
@@ -52,12 +46,13 @@ export class HomeComponent implements OnInit {
         },
         error: (err: any) => {
           console.error('Rooms error:', err);
-          this.rooms = this.mockRooms;
+          this.rooms = [];
+          this.roomsError = true;
           this.loading = false;
         }
       });
     } else {
-      this.rooms = this.mockRooms;
+      this.rooms = [];
       this.loading = false;
     }
   }

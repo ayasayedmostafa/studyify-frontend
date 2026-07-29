@@ -44,6 +44,14 @@ export class SocketService {
     this.socket.off('room:kicked');
   }
 
+  onRoomApproved(callback: (data: { roomId: string }) => void): void {
+    this.socket.on('room:approved', callback);
+  }
+
+  removeRoomApprovedListener(): void {
+    this.socket.off('room:approved');
+  }
+
   // ─── Chat ─────────────────────────────────────────────────────────────────────
 
   sendMessage(data: { roomId: string; content: string }): void {
